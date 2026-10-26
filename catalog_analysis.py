@@ -25,7 +25,7 @@ movies = [
 
 def main():
     print("Hello from dz-catalog-analysis-pushkareva!")
-    print(duration_in_hours(98))
+    print(decade_label(2015.1))
 
 def average_rating(movies):
     ttl = 0
@@ -50,6 +50,27 @@ def catalog_age_stats(movies, current_year=2026):
 
 def duration_in_hours(minutes):
     return f"{minutes // 60} ч {minutes % 60} м"
+
+def rating_tier(rating):
+    if rating < 5:
+        return "слабо"
+    # elif 6.9 >= rating >= 5:
+    #     return "средне"
+    # elif 8.9 >= rating >= 7:
+    #     return "хорошо"
+    elif rating >= 9:
+        return "шедевр"
+
+    return "средне" if 6.9 >= rating >= 5 else "хорошо"
+
+def decade_label(year):
+    match year:
+        case _ if year >= 2020:
+            return "новые"
+        case _ if 2020 > year >= 2015:
+            return "недавние"
+        case _ if 2015 > year:
+            return "старые"
 
 if __name__ == "__main__":
     main()
