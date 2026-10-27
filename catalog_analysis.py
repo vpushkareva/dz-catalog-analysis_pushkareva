@@ -25,7 +25,7 @@ movies = [
 
 def main():
     print("Hello from dz-catalog-analysis-pushkareva!")
-    print(decade_label(2015.1))
+    print(count_long_movies(movies, 100))
 
 def average_rating(movies):
     ttl = 0
@@ -71,6 +71,31 @@ def decade_label(year):
             return "недавние"
         case _ if 2015 > year:
             return "старые"
+
+def print_not_comedies(movies):
+    for movie in movies:
+        if "comedy" not in movie["genres"]:
+            continue
+        else:
+            print(movie["title"])
+
+def find_wow(movies):
+    i = 0
+    while i < len(movies):
+        if movies[i]["rating"] > 9:
+            print(movies[i]["title"])
+            break
+        i += 1
+    else:
+        print("Шедевров не найдено")
+
+def count_long_movies(movies, threshold=120):
+    ttl = 0
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            ttl += 1
+    return ttl
+
 
 if __name__ == "__main__":
     main()
