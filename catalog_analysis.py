@@ -25,7 +25,7 @@ movies = [
 
 def main():
     print("Hello from dz-catalog-analysis-pushkareva!")
-    print(format_report_line(movies[7]))
+    print(top_n_by_rating(movies))
 
 def average_rating(movies):
     ttl = 0
@@ -108,6 +108,16 @@ def make_slug(title):
 
 def format_report_line(movie):
     return f'"{movie["title"]}" ({movie["year"]}) — {movie["rating"]}, {duration_in_hours(movie["duration_min"])}, жанры: {" ".join(sorted(movie["genres"]))}'
+
+def titles_sorted_by_rating(movies):
+    return sorted(movies, key=lambda m: m["rating"], reverse=True)
+
+def top_n_by_rating(movies, n=3):
+    movies_top_raiting = titles_sorted_by_rating(movies)[:n]
+    var = ()
+    for movie in movies_top_raiting:
+        var += (movie["title"], movie["rating"])
+    return var
 
 if __name__ == "__main__":
     main()
