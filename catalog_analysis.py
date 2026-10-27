@@ -25,7 +25,7 @@ movies = [
 
 def main():
     print("Hello from dz-catalog-analysis-pushkareva!")
-    print(count_long_movies(movies, 100))
+    print(format_report_line(movies[7]))
 
 def average_rating(movies):
     ttl = 0
@@ -49,7 +49,7 @@ def catalog_age_stats(movies, current_year=2026):
     return (most_old, most_new, math.ceil(med / len(movies)))
 
 def duration_in_hours(minutes):
-    return f"{minutes // 60} ч {minutes % 60} м"
+    return f"{minutes // 60}ч {minutes % 60}м"
 
 def rating_tier(rating):
     if rating < 5:
@@ -96,6 +96,18 @@ def count_long_movies(movies, threshold=120):
             ttl += 1
     return ttl
 
+def normalize_title(title):
+    title_words = title.split()
+    words = []
+    for word in title_words:
+        words.append(word[0].upper() + word[1:])
+    return " ".join(words)
+
+def make_slug(title):
+    return title.lower().replace(" ", "-")
+
+def format_report_line(movie):
+    return f'"{movie["title"]}" ({movie["year"]}) — {movie["rating"]}, {duration_in_hours(movie["duration_min"])}, жанры: {" ".join(sorted(movie["genres"]))}'
 
 if __name__ == "__main__":
     main()
