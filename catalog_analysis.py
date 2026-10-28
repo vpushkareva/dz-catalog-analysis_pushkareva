@@ -57,30 +57,25 @@ def duration_in_hours(minutes):
 def rating_tier(rating):
     if rating < 5:
         return "слабо"
-    # elif 6.9 >= rating >= 5:
-    #     return "средне"
-    # elif 8.9 >= rating >= 7:
-    #     return "хорошо"
     elif rating >= 9:
         return "шедевр"
 
-    return "средне" if 6.9 >= rating >= 5 else "хорошо"
+    return "средне" if 5 <= rating < 7 else "хорошо"
 
 def decade_label(year):
     match year:
-        case _ if year >= 2020:
+        case _ if year > 2020:
             return "новые"
-        case _ if 2020 > year >= 2015:
+        case _ if 2020 >= year >= 2015:
             return "недавние"
         case _ if 2015 > year:
             return "старые"
 
 def print_not_comedies(movies):
     for movie in movies:
-        if "comedy" not in movie["genres"]:
+        if "comedy" in movie["genres"]:
             continue
-        else:
-            print(movie["title"])
+        print(movie["title"])
 
 def find_wow(movies):
     i = 0
@@ -113,14 +108,15 @@ def format_report_line(movie):
     return f'"{movie["title"]}" ({movie["year"]}) — {movie["rating"]}, {duration_in_hours(movie["duration_min"])}, жанры: {" ".join(sorted(movie["genres"]))}'
 
 def titles_sorted_by_rating(movies):
-    return sorted(movies, key=lambda m: m["rating"], reverse=True)
+    movies_sorted = sorted(movies, key=lambda m: m["rating"], reverse=True)
+    return [movie["title"] for movie in movies_sorted]
 
 def top_n_by_rating(movies, n=3):
-    movies_top_raiting = titles_sorted_by_rating(movies)[:n]
-    var = ()
-    for movie in movies_top_raiting:
-        var += (movie["title"], movie["rating"])
-    return var
+    movies_top = sorted(movies, key=lambda m: m["rating"], reverse=True)[:n]
+    top = []
+    for movie in movies_top:
+        top.append((movie["title"], movie["rating"]))
+    return top
 
 def count_by_genre(movies):
     counts = {}
