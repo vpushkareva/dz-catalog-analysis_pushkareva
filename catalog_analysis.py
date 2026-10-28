@@ -2,7 +2,8 @@ import math
 
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
-     "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
+     "rating": 8.6, "duration_min": 155,
+     "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
     {"title": "Kitchen Stories", "year": 2019, "genres": {"comedy", "drama"},
      "rating": 7.1, "duration_min": 98, "actors": ["A. Novak", "M. Ferguson"]},
     {"title": "silent hours", "year": 2016, "genres": {"thriller", "drama"},
@@ -101,7 +102,10 @@ def make_slug(title):
     return title.lower().replace(" ", "-")
 
 def format_report_line(movie):
-    return f'"{normalize_title(movie["title"])}" ({movie["year"]}) — {movie["rating"]}, {duration_in_hours(movie["duration_min"])}, жанры: {" ".join(sorted(movie["genres"]))}'
+    return f'"{normalize_title(movie["title"])}" ' \
+           f'({movie["year"]}) — {movie["rating"]}, ' \
+           f'{duration_in_hours(movie["duration_min"])}, ' \
+           f'жанры: {" ".join(sorted(movie["genres"]))}'
 
 def titles_sorted_by_rating(movies):
     movies_sorted = sorted(movies, key=lambda m: m["rating"], reverse=True)
@@ -131,7 +135,8 @@ def actor_filmography(movies):
 
 def dict_comp(movies):
     av_rating = average_rating(movies)
-    rating_dict = {movie["title"]:movie["rating"] for movie in movies if movie["rating"] > av_rating}
+    rating_dict = {movie["title"]:movie["rating"]
+                   for movie in movies if movie["rating"] > av_rating}
     return rating_dict
 
 def all_genres(movies):
@@ -167,7 +172,8 @@ def build_report(movies):
     print()
     print("Фильмов по жанрам:")
     genre_counts = count_by_genre(movies)
-    for genre, count in sorted(genre_counts.items(), key=lambda pair: pair[1], reverse=True):
+    top_genres = sorted(genre_counts.items(), key=lambda p: p[1], reverse=True)
+    for genre, count in top_genres:
         print(f"  {genre} — {count}")
 
     print()
