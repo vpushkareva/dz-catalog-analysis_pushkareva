@@ -24,11 +24,7 @@ movies = [
 ]
 
 def main():
-    print("Hello from dz-catalog-analysis-pushkareva!")
-    print(dict_comp(movies))
-    for movie in iter_high_rated(movies):
-        print(format_report_line(movie))
-    print(sum(m["duration_min"] for m in movies if m["rating"] > 7))
+    build_report(movies)
 
 def average_rating(movies):
     ttl = 0
@@ -105,7 +101,7 @@ def make_slug(title):
     return title.lower().replace(" ", "-")
 
 def format_report_line(movie):
-    return f'"{movie["title"]}" ({movie["year"]}) — {movie["rating"]}, {duration_in_hours(movie["duration_min"])}, жанры: {" ".join(sorted(movie["genres"]))}'
+    return f'"{normalize_title(movie["title"])}" ({movie["year"]}) — {movie["rating"]}, {duration_in_hours(movie["duration_min"])}, жанры: {" ".join(sorted(movie["genres"]))}'
 
 def titles_sorted_by_rating(movies):
     movies_sorted = sorted(movies, key=lambda m: m["rating"], reverse=True)
@@ -154,6 +150,28 @@ def iter_high_rated(movies, min_rating=8.0):
     for movie in movies:
         if movie["rating"] >= min_rating:
             yield movie
+
+def build_report(movies):
+    old, new, avg_age = catalog_age_stats(movies)
+
+    print("ОТЧЕТ ПО КАТАЛОГУ")
+    print(f"Средний рейтинг: {average_rating(movies)}")
+    print(f"Средний возраст фильмов: {avg_age} лет")
+
+    print()
+    print("Топ-3 фильма:")
+    top_movies = sorted(movies, key=lambda m: m["rating"], reverse=True)[:3]
+    for movie in top_movies:
+        print(f"  {format_report_line(movie)}")
+
+    print()
+    print("Фильмов по жанрам:")
+    genre_counts = count_by_genre(movies)
+    for genre, count in sorted(genre_counts.items(), key=lambda pair: pair[1], reverse=True):
+        print(f"  {genre} — {count}")
+
+    print()
+    print(f"Все жанры каталога: {', '.join(sorted(all_genres(movies)))}")
 
 if __name__ == "__main__":
     main()
