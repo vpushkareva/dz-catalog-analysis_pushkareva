@@ -25,7 +25,7 @@ movies = [
 
 def main():
     print("Hello from dz-catalog-analysis-pushkareva!")
-    print(top_n_by_rating(movies))
+    print(dict_comp(movies))
 
 def average_rating(movies):
     ttl = 0
@@ -118,6 +118,27 @@ def top_n_by_rating(movies, n=3):
     for movie in movies_top_raiting:
         var += (movie["title"], movie["rating"])
     return var
+
+def count_by_genre(movies):
+    counts = {}
+    for movie in movies:
+        for genre in movie["genres"]:
+            counts[genre] = counts.get(genre, 0) + 1
+    return counts
+
+def actor_filmography(movies):
+    filmography = {}
+    for movie in movies:
+        for actor in movie["actors"]:
+            filmography[actor] = filmography.get(actor, [])
+            filmography[actor].append(movie["title"])
+    return filmography
+
+def dict_comp(movies):
+    av_rating = average_rating(movies)
+    rating_dict = {movie["title"]:movie["rating"] for movie in movies if movie["rating"] > av_rating}
+    return rating_dict
+
 
 if __name__ == "__main__":
     main()
